@@ -297,14 +297,12 @@ public class CRUDProduto {
 
 		catch (SQLException ex) {
 			ex.printStackTrace();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				con.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		} 
+		finally {
+			try {con.close();} catch (Exception e) {e.printStackTrace();}
 		}
 
 		return lista;
