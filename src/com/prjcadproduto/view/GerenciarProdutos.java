@@ -130,19 +130,54 @@ public class GerenciarProdutos extends JFrame {
 		btnCadastrar.setBounds(10, 227, 89, 49);
 		contentPane.add(btnCadastrar);
 		
+		//-------------
 		JButton btnAtualizar = new JButton("Atualizar");
 		btnAtualizar.addActionListener(new ActionListener() {
 			//ATUALIZAR
 			public void actionPerformed(ActionEvent e) {
 				
+				//Caixa de diálogo
+				String id = JOptionPane.showInputDialog("Digite o ID do cliente");
+				
+				//Passar os dados do formulário para o objeto Produto
+				produto.setNome(txtNome.getText());
+				produto.setDescricaoPr(txtDescricao.getText());
+				produto.setFabricantePr(txtFabricacao.getText());
+				produto.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
+				produto.setPreco(Double.parseDouble(txtPreco.getText()));
+				produto.setId(Integer.parseInt(id));
+				
+				String retorno = crud.atualizar(produto);
+				JOptionPane.showMessageDialog(null, retorno);
+				
+				//Zera os campos preenchidos
+				txtNome.setText("");
+				txtDescricao.setText("");
+				txtFabricacao.setText("");
+				txtQuantidade.setText("");
+				txtPreco.setText("");
+				id="0";
 			}
 		});
 		btnAtualizar.setBounds(109, 227, 89, 49);
 		contentPane.add(btnAtualizar);
 		
+		//-----------
 		JButton btnDeletar = new JButton("Deletar");
+		btnDeletar.addActionListener(new ActionListener() {
+			//DELETAR
+			public void actionPerformed(ActionEvent e) {
+				
+				String id = JOptionPane.showInputDialog("Digite o ID do cliente");
+				
+				produto.setId(Integer.parseInt(id));
+				
+				JOptionPane.showMessageDialog(null, crud.deletar(produto));
+			}
+		});
 		btnDeletar.setBounds(235, 227, 89, 49);
 		contentPane.add(btnDeletar);
+		
 		
 		JButton btnPesquisar = new JButton("Pesquisar");
 		btnPesquisar.setBounds(334, 227, 89, 49);
@@ -169,12 +204,12 @@ public class GerenciarProdutos extends JFrame {
 		txtPreco.setColumns(10);
 		txtPreco.setBounds(160, 179, 94, 20);
 		contentPane.add(txtPreco);
-		
-		carregarDados();
-		
+
+	carregarDados();
 		
 	}
 	
+	// --------
 	private void carregarDados() {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 287, 413, 161);

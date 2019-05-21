@@ -259,7 +259,7 @@ public class CRUDProduto {
 		return produto;
 	}
 	
-	public List<Produto> PesquisarTodos(String nome) {
+	public List<Produto> PesquisarTodos() {
 
 		List<Produto> lista = new ArrayList<Produto>();
 
