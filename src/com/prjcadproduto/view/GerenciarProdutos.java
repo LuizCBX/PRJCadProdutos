@@ -6,7 +6,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import com.prjcadproduto.dominio.Produto;
+import com.prjcadproduto.persistencia.CRUDProduto;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -15,16 +21,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
 
 public class GerenciarProdutos extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNome;
-	private JTextField textField;
-	private JTextField txtFabricacao;
+	private JTextField txtDescricao;
+	private JTextField txtFabricacao;//fabricantePr
 	private JTextField txtQuantidade;
 	private JTextField txtPreco;
-	private JTable table;
+	private JTable tbCadastrar;
+	private CRUDProduto crud;
+	private Produto produto;
+	
 
 	/**
 	 * Launch the application.
@@ -46,6 +56,12 @@ public class GerenciarProdutos extends JFrame {
 	 * Create the frame.
 	 */
 	public GerenciarProdutos() {
+		
+		//Vamos instanciar as classes Cliente e CRUD 
+		//Gera um objeto termo "new"
+		produto = new Produto();
+		crud = new CRUDProduto();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 449, 498);
 		contentPane = new JPanel();
@@ -76,10 +92,10 @@ public class GerenciarProdutos extends JFrame {
 		lblFabricao.setBounds(54, 118, 94, 20);
 		contentPane.add(lblFabricao);
 		
-		textField = new JTextField();
-		textField.setBounds(160, 48, 248, 61);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtDescricao = new JTextField();
+		txtDescricao.setBounds(160, 48, 248, 61);
+		contentPane.add(txtDescricao);
+		txtDescricao.setColumns(10);
 		
 		txtFabricacao = new JTextField();
 		txtFabricacao.setColumns(10);
@@ -87,12 +103,38 @@ public class GerenciarProdutos extends JFrame {
 		contentPane.add(txtFabricacao);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			//CADASTRAR
+			public void actionPerformed(ActionEvent e) {
+				
+				//Passar os dados do formulário para o objeto Produto
+				produto.setNome(txtNome.getText());
+				produto.setDescricaoPr(txtDescricao.getText());
+				produto.setFabricantePr(txtFabricacao.getText());
+				produto.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
+				produto.setPreco(Double.parseDouble(txtPreco.getText()));
+				
+				String retorno = crud.cadastrar(produto);
+				JOptionPane.showMessageDialog(null, retorno);
+				
+				//Zera os campos preenchidos
+				txtNome.setText("");
+				txtDescricao.setText("");
+				txtFabricacao.setText("");
+				txtQuantidade.setText("");
+				txtPreco.setText("");
+				carregarDados();
+				
+			}
+		});
 		btnCadastrar.setBounds(10, 227, 89, 49);
 		contentPane.add(btnCadastrar);
 		
 		JButton btnAtualizar = new JButton("Atualizar");
 		btnAtualizar.addActionListener(new ActionListener() {
+			//ATUALIZAR
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		btnAtualizar.setBounds(109, 227, 89, 49);
@@ -128,11 +170,36 @@ public class GerenciarProdutos extends JFrame {
 		txtPreco.setBounds(160, 179, 94, 20);
 		contentPane.add(txtPreco);
 		
+		carregarDados();
+		
+		
+	}
+	
+	private void carregarDados() {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 287, 413, 161);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
-		scrollPane.setViewportView(table);
+		// ---------- Criar colunas na janela do CONSTRUTO00R!!
+		String[] colunas = {"Id", "Nome do Pr.", "Descrição", "Fabricante", "Quant.", "Preço"};
+		
+		
+		//Vamos construir o modelo de dados para exibir na tabela
+		DefaultTableModel modelo = new DefaultTableModel(colunas,0);
+		
+		for(Produto c : crud.PesquisarTodos()) {
+			modelo.addRow(new Object[] {
+					c.getId(),
+					c.getNome(),
+					c.getDescricaoPr(),
+					c.getFabricantePr(),
+					c.getQuantidade(),
+					c.getPreco()
+			});
+		}
+		
+		
+		tbCadastrar = new JTable(modelo);
+		scrollPane.setViewportView(tbCadastrar);
 	}
 }
