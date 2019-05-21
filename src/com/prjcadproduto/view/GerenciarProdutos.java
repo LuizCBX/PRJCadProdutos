@@ -56,6 +56,7 @@ public class GerenciarProdutos extends JFrame {
 	 * Create the frame.
 	 */
 	public GerenciarProdutos() {
+		setTitle("Gerenciar Produtos");
 		
 		//Vamos instanciar as classes Cliente e CRUD 
 		//Gera um objeto termo "new"
@@ -180,6 +181,14 @@ public class GerenciarProdutos extends JFrame {
 		
 		
 		JButton btnPesquisar = new JButton("Pesquisar");
+		btnPesquisar.addActionListener(new ActionListener() {
+			//ATUALIZAR
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
 		btnPesquisar.setBounds(334, 227, 89, 49);
 		contentPane.add(btnPesquisar);
 		
@@ -237,4 +246,6 @@ public class GerenciarProdutos extends JFrame {
 		tbCadastrar = new JTable(modelo);
 		scrollPane.setViewportView(tbCadastrar);
 	}
+	
+	
 }

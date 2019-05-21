@@ -32,6 +32,7 @@ public class CRUDProduto {
 	private ResultSet rs = null;// Guardar os retornos dos selects no banco de dados
 	private PreparedStatement pst = null; // Executa as consultas de SQL
 
+	//CADASTRAR
 	public String cadastrar(Produto produto) {
 
 		String msg = "";
@@ -43,7 +44,7 @@ public class CRUDProduto {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cadprodutodb?serverTimezone=UTC", "root",
 					"");// conexao com o banco de dados
 
-			String consulta = "INSERT INTO tbcadastrar (nome, descricaoPr, fabricantePr, quantidade, preco) values(?,?,?,?)";
+			String consulta = "INSERT INTO tbcadastrar (nome, descricaoPr, fabricantePr, quantidade, preco) values(?,?,?,?,?)";
 
 			// Executa as consultas de SQL
 			pst = con.prepareStatement(consulta);
@@ -82,8 +83,7 @@ public class CRUDProduto {
 		// Criação dos objetos para a conexao com o banco de dados
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cadprodutodb?serverTimezone=UTC", "root",
-					"");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cadprodutodb?serverTimezone=UTC", "root", "");
 
 			String consulta = "UPDATE tbcadastrar SET nome=?, descricaoPr=?, fabricantePr=?, quantidade=?, preco=? WHERE id=?";
 
@@ -184,12 +184,12 @@ public class CRUDProduto {
 			 */
 			while (rs.next()) {
 				lista.add(new Produto(
-						rs.getInt(0),
-						rs.getString(1),
+						rs.getInt(1),
 						rs.getString(2),
 						rs.getString(3),
-						rs.getInt(4),
-						rs.getDouble(5)
+						rs.getString(4),
+						rs.getInt(5),
+						rs.getDouble(6)
 						));
 			} // Fim do while
 
@@ -236,12 +236,12 @@ public class CRUDProduto {
 			 * produtos para, então retorná-la
 			 */
 			if(rs.next()) {
-    			produto.setId(rs.getInt(0));
-    			produto.setNome(rs.getString(1));
-    			produto.setDescricaoPr(rs.getString(2));
-    			produto.setFabricantePr(rs.getString(3));
-    			produto.setQuantidade(rs.getInt(4));
-    			produto.setPreco(rs.getDouble(5));
+    			produto.setId(rs.getInt(1));
+    			produto.setNome(rs.getString(2));
+    			produto.setDescricaoPr(rs.getString(3));
+    			produto.setFabricantePr(rs.getString(4));
+    			produto.setQuantidade(rs.getInt(5));
+    			produto.setPreco(rs.getDouble(6));
     		}
 
 		} // Fim do try
